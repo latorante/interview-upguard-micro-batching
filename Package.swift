@@ -10,7 +10,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "1.5.0"),
-        .package(url: "https://github.com/latorante/interview-upguard-micro-batching-library", from: "1.0.0")
+        .package(url: "https://github.com/latorante/interview-upguard-micro-batching-library", .branch("main"))
     ],
     targets: [
         .executableTarget(
