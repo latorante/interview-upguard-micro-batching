@@ -1,0 +1,3 @@
+[submodule "micro-batching"]
+	path = micro-batching
+	url = https://github.com/latorante/interview-upguard-micro-batching-library

@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "MicroBatching",
+        "repositoryURL": "https://github.com/latorante/interview-upguard-micro-batching-library",
+        "state": {
+          "branch": null,
+          "revision": "c4ff1d96de6332e5b7952f383be10c48cfa80d99",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "swift-argument-parser",
+        "repositoryURL": "https://github.com/apple/swift-argument-parser",
+        "state": {
+          "branch": null,
+          "revision": "41982a3656a71c768319979febd796c6fd111d5c",
+          "version": "1.5.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
