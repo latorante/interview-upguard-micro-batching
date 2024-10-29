@@ -9,24 +9,38 @@ import Foundation
 import ArgumentParser
 import MicroBatching
 
+/// A simple command-line tool to run a test micro batcher using the micro-batching library.
 struct MicroBatcher: ParsableCommand {
     
     static let configuration = CommandConfiguration(
         abstract: "Run test micro batcher using micro-batching library created for interview process."
     )
 
-    @Argument(help: "Number of Jobs in a batch.")
+    @Argument(help: "Number of Jobs in a batch. Must be greater than 0.")
     var sizeOfBatch: Int = 10
     
-    @Argument(help: "Max age in seconds.")
-    var maxAge: Int = 15
+    @Argument(help: "Frequency of batches in seconds. Must be greater than 0.")
+    var frequency: Int = 15
     
-    @Argument(help: "Number of Jobs to create.")
+    @Argument(help: "Number of Jobs to create. Greater than 0.")
     var numberOfJobsToCreate: Int = 100
+    
+    /// Validate the input arguments
+    func validate() throws {
+        if (numberOfJobsToCreate < 1){
+            throw ValidationError("Number of Jobs to create must be greater than 0.")
+        }
+        if (frequency < 1){
+            throw ValidationError("Jobs must run at least for a second.")
+        }
+        if (sizeOfBatch < 1){
+            throw ValidationError("Batch size must be greater than 0.")
+        }
+    }
     
     func run() {
         // Step 1: Create a configuration for micro-batching
-        let config = MicroBatchingConfig(batchSize: sizeOfBatch, batchTimeout: TimeInterval(maxAge))
+        let config = MicroBatchingConfig(batchSize: sizeOfBatch, batchFrequency: TimeInterval(frequency))
         
         // Step 2: Create an instance of your batch processor
         let batchProcessor = SimpleBatchProcessor() // Replace with your actual implementation
@@ -44,7 +58,6 @@ struct MicroBatcher: ParsableCommand {
             for i in 1...numberOfJobsToCreate {
                 let job: Job = {
                     // Simulating some work with sleep
-                    Thread.sleep(forTimeInterval: 1) // Simulate processing time
                     return JobResult(result: "Job \(i) completed", error: nil) // Return a result
                 }
                 await microBatching.submit(job: job) // Use 'await' for actor method
