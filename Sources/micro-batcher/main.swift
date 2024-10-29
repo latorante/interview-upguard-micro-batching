@@ -25,6 +25,9 @@ struct MicroBatcher: ParsableCommand {
     @Argument(help: "Number of Jobs to create. Greater than 0.")
     var numberOfJobsToCreate: Int = 100
     
+    @Argument(help: "Timeout for job submission in seconds. Must be greater than 0.")
+    var timeout: Int = 1
+    
     /// Validate the input arguments
     func validate() throws {
         if (numberOfJobsToCreate < 1){
@@ -36,6 +39,9 @@ struct MicroBatcher: ParsableCommand {
         if (sizeOfBatch < 1){
             throw ValidationError("Batch size must be greater than 0.")
         }
+        if (timeout < 1) {
+            throw ValidationError("Timeout must be greater than 0 seconds.")
+        }
     }
     
     func run() {
@@ -43,7 +49,7 @@ struct MicroBatcher: ParsableCommand {
         let config = MicroBatchingConfig(batchSize: sizeOfBatch, batchFrequency: TimeInterval(frequency))
         
         // Step 2: Create an instance of your batch processor
-        let batchProcessor = SimpleBatchProcessor() // Replace with your actual implementation
+        let batchProcessor = SimpleBatchProcessor(timeout: timeout) // Replace with your actual implementation
 
         // Step 3: Create the MicroBatching instance
         let microBatching = MicroBatching(config: config, batchProcessor: batchProcessor)
@@ -52,9 +58,10 @@ struct MicroBatcher: ParsableCommand {
         // on us, so we use a DispatchGroup to wait for the Task to finish.
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
-        
-        // Step 4: Create and submit the jobs
         Task {
+            // Stop after "timeout" variable in seconds reached
+
+            // add timeout for the job submission
             for i in 1...numberOfJobsToCreate {
                 let job: Job = {
                     // Simulating some work with sleep
@@ -75,6 +82,13 @@ struct MicroBatcher: ParsableCommand {
 /// Sample Batch Processer implementation using the BatchProcessor protocol
 /// from the micro-batching library.
 struct SimpleBatchProcessor: BatchProcessor {
+    let timeout: Int
+    
+    public init(timeout: Int) {
+        // TODO: Ideally the batch processor would implement the time out as well.
+        self.timeout = timeout
+    }
+    
     func process(batch: [Job]) -> [JobResult] {
         // Process each job and collect results
         var results: [JobResult] = []
