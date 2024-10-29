@@ -17,6 +17,7 @@ let package = Package(
             name: "micro-batcher",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser"),
+                .product(name: "MicroBatching", package: "interview-upguard-micro-batching-library")
             ]),
     ]
 )
