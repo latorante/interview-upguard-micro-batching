@@ -6,6 +6,8 @@ The dependency is defined in the `Package.swift` file as `.package(url: "https:/
 
 This project just uses the library and enables - displays it's functionality.
 
+[The library can be found here.](https://github.com/latorante/interview-upguard-micro-batching-library)
+
 ## Prerequisites
 
 - Swift 5.2.4
