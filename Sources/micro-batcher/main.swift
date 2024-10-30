@@ -59,9 +59,6 @@ struct MicroBatcher: ParsableCommand {
         let dispatchGroup = DispatchGroup()
         dispatchGroup.enter()
         Task {
-            // Stop after "timeout" variable in seconds reached
-
-            // add timeout for the job submission
             for i in 1...numberOfJobsToCreate {
                 let job: Job = {
                     // Simulating some work with sleep
